@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "986088196905",
+    "firebase_url": "https://logqualy-6b995.firebaseio.com",
+    "project_id": "logqualy-6b995",
+    "storage_bucket": "logqualy-6b995.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:986088196905:android:c4dc08bf3d541f82b18538",
+        "android_client_info": {
+          "package_name": "com.example.logqualy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "986088196905-va74alrbbsvidpj16avadr5uq8nliphu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvvqOQLKnuv8wue96hj1GAhFTR_cT9G-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "986088196905-va74alrbbsvidpj16avadr5uq8nliphu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
