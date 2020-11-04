@@ -54,6 +54,7 @@
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
         android:text="Create"
+        android:textColor="#FFFFFF"
         app:backgroundTint="#009688"
         app:layout_constraintEnd_toEndOf="@+id/newUserPassEditTxt"
         app:layout_constraintStart_toStartOf="@+id/newUserPassEditTxt"
