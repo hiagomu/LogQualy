@@ -39,6 +39,12 @@ public class MainActivity extends AppCompatActivity {
         login();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        updateUI(FirebaseAuth.getInstance().getCurrentUser());
+    }
+
     private void carregarCampos() {
         mAuth = FirebaseAuth.getInstance();
         mainNovaConta = findViewById(R.id.mainCreateAccTxt);
@@ -47,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         mainPassEditTxt = findViewById(R.id.mainPassEditTxt);
         mainLoginButton = findViewById(R.id.mainLoginButton);
     }
+
 
     private void novaConta() {
         mainNovaConta.setOnClickListener(new View.OnClickListener() {
@@ -58,8 +65,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void updateUI (FirebaseUser user) {
+        if (user != null) {
+            Intent intent = new Intent(MainActivity.this, ProductListActivity.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(MainActivity.this, "Erro ao cadastrar usuário", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void login() {
+
         mainLoginButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 String email = mainEmailEditTxt.getText().toString();
@@ -87,14 +105,6 @@ public class MainActivity extends AppCompatActivity {
                         });
             }
 
-            private void updateUI (FirebaseUser user) {
-                if (user != null) {
-                    Intent intent = new Intent(MainActivity.this, ProductListActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(MainActivity.this, "Erro ao cadastrar usuário", Toast.LENGTH_SHORT).show();
-                }
-            }
         });
     }
 }

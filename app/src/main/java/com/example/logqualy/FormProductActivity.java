@@ -9,13 +9,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.example.logqualy.model.Product;
 
+import static com.example.logqualy.Constantes.PRODUCT_SAVE;
+
 public class FormProductActivity extends AppCompatActivity {
 
-    public static final String PRODUCT_SAVE = "PRODUCT_SAVE";
     private EditText titleFormProd;
     private EditText descFormProd;
     private EditText dateFormProd;
@@ -34,7 +34,7 @@ public class FormProductActivity extends AppCompatActivity {
         titleFormProd = findViewById(R.id.titleFormProdEditTxt);
         descFormProd = findViewById(R.id.descFormProdEditTxt);
         dateFormProd = findViewById(R.id.dateFormProdEditTxt);
-        saveFormProd = findViewById(R.id.saveFormPordButton);
+        saveFormProd = findViewById(R.id.saveFormProdButton);
     }
 
     private void salvarForm() {
@@ -45,6 +45,7 @@ public class FormProductActivity extends AppCompatActivity {
                 Intent intent = new Intent(FormProductActivity.this, ProductListActivity.class);
                 intent.putExtra(PRODUCT_SAVE, product);
                 setResult(Activity.RESULT_OK, intent);
+                finish();
             }
         });
     }
