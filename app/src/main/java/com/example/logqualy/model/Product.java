@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Product implements Serializable {
 
+    private String id;
     private String titulo;
     private String descricao;
     private String data;
@@ -15,6 +16,14 @@ public class Product implements Serializable {
         this.titulo = titulo;
         this.descricao = descricao;
         this.data = data;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitulo() {

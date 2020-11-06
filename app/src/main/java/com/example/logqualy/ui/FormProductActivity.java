@@ -80,7 +80,6 @@ public class FormProductActivity extends AppCompatActivity {
             dateFormProd.requestFocus();
             return false;
         }
-
         return true;
     }
 

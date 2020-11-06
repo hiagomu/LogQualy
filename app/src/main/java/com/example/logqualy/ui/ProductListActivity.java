@@ -26,13 +26,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.logqualy.ui.Constantes.PRODUCT_EDIT;
 import static com.example.logqualy.ui.Constantes.PRODUCT_SAVE;
 import static com.example.logqualy.ui.Constantes.REQUEST_CODE;
+import static com.example.logqualy.ui.Constantes.REQUEST_EDIT_PRODUCT;
 
 public class ProductListActivity extends AppCompatActivity {
 
@@ -79,9 +82,16 @@ public class ProductListActivity extends AppCompatActivity {
                 Product product = (Product) data.getSerializableExtra(PRODUCT_SAVE);
 
                 db.collection(PRODUCTS_COLLECTION).add(product);
+                loadData();
             }
         }
-        loadData();
+        if (requestCode == REQUEST_EDIT_PRODUCT && data.hasExtra(PRODUCT_EDIT)) {
+            if (resultCode == RESULT_OK) {
+                Product product = (Product)data.getSerializableExtra(PRODUCT_EDIT);
+                db.collection(PRODUCTS_COLLECTION).document(product.getId()).set(product);
+                loadData();
+            }
+        }
     }
 
     @Override
@@ -132,15 +142,16 @@ public class ProductListActivity extends AppCompatActivity {
 
         adapter = new ProductAdapter(getApplicationContext(), productList);
         prodListRecycler.setAdapter(adapter);
-//  Edição de item (Incompleto)
-//        prodListRecycler.setOnClickListener(new ProductItemClickListener() {
-//            @Override
-//            public void itemClick(Product product, int posicao) {
-//                posicaoItemClick = posicao;
-//                Intent intent = new Intent(ProductListActivity.this, FormProductActivity.class);
-//                intent.putExtra(Constantes)
-//            }
-//        });
+
+        adapter.setOnItemClickListener(new ProductItemClickListener() {
+            @Override
+            public void itemClick(Product product, int posicao) {
+                posicaoItemClick = posicao;
+                Intent intent = new Intent(ProductListActivity.this, FormProductActivity.class);
+                intent.putExtra(PRODUCT_EDIT, product);
+                startActivityForResult(intent, REQUEST_EDIT_PRODUCT);
+            }
+        });
     }
 
     void loadData() {
@@ -150,7 +161,12 @@ public class ProductListActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            productList = task.getResult().toObjects(Product.class);
+                            productList.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Product product = document.toObject(Product.class);
+                                product.setId(document.getId());
+                                productList.add(product);
+                            }
                             configuraRecycler();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
