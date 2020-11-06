@@ -1,4 +1,4 @@
-package com.example.logqualy.adapter;
+package com.example.logqualy.ui.recyclerview.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,17 +11,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.logqualy.R;
 import com.example.logqualy.model.Product;
-
-import org.w3c.dom.Text;
+import com.example.logqualy.ui.recyclerview.listener.ProductItemClickListener;
 
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
     private List<Product> prudutos;
+    private Context context;
+    private ProductItemClickListener onItemClickListener;
 
-    public ProductAdapter(List<Product> prudutos) {
+    public ProductAdapter(Context context, List<Product> prudutos) {
         this.prudutos = prudutos;
+        this.context = context;
     }
 
     @NonNull
@@ -34,12 +36,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ProductAdapter.ViewHolder holder, int position) {
         Product product = prudutos.get(position);
-        //vicula
+        holder.vicula(product);
     }
 
     @Override
     public int getItemCount() {
         return prudutos.size();
+    }
+
+    public void setOnItemClickListener(ProductItemClickListener productItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -54,8 +60,21 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             nome = itemView.findViewById(R.id.nameItemEditTxt);
             descricao = itemView.findViewById(R.id.descItemEditTxt);
             data = itemView.findViewById(R.id.dateItemEditTxt);
+        }
 
+        public void vicula(Product product) {
+            nome.setText(product.getTitulo());
+            descricao.setText(product.getDescricao());
+            data.setText(product.getData());
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int posicao = getAdapterPosition();
+                    Product product = prudutos.get(getAdapterPosition());
+                    onItemClickListener.itemClick(product, posicao);
+                }
+            });
         }
     }
 }

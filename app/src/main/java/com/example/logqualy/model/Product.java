@@ -3,9 +3,13 @@ package com.example.logqualy.model;
 import java.io.Serializable;
 
 public class Product implements Serializable {
+
     private String titulo;
     private String descricao;
     private String data;
+
+    public Product() {
+    }
 
     public Product(String titulo, String descricao, String data) {
         this.titulo = titulo;

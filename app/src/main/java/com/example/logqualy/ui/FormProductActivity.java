@@ -1,4 +1,4 @@
-package com.example.logqualy;
+package com.example.logqualy.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,9 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.logqualy.R;
 import com.example.logqualy.model.Product;
 
-import static com.example.logqualy.Constantes.PRODUCT_SAVE;
+import static com.example.logqualy.ui.Constantes.PRODUCT_SAVE;
 
 public class FormProductActivity extends AppCompatActivity {
 
