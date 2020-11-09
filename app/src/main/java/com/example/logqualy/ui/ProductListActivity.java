@@ -3,6 +3,7 @@ package com.example.logqualy.ui;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +20,7 @@ import android.widget.EditText;
 import com.example.logqualy.R;
 import com.example.logqualy.model.Product;
 import com.example.logqualy.ui.recyclerview.adapter.ProductAdapter;
+import com.example.logqualy.ui.recyclerview.helper.ProductItemTouchHelper;
 import com.example.logqualy.ui.recyclerview.listener.ProductItemClickListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.logqualy.ui.Constantes.EXTRA_PRODUCT_EDIT;
+import static com.example.logqualy.ui.Constantes.PRODUCTS_COLLECTION;
 import static com.example.logqualy.ui.Constantes.PRODUCT_EDIT;
 import static com.example.logqualy.ui.Constantes.PRODUCT_SAVE;
 import static com.example.logqualy.ui.Constantes.REQUEST_CODE;
@@ -41,7 +44,7 @@ import static com.example.logqualy.ui.Constantes.REQUEST_EDIT_PRODUCT;
 
 public class ProductListActivity extends AppCompatActivity {
 
-    private static final String PRODUCTS_COLLECTION = "products";
+
     private static final String TAG = "Adding Document";
 
     private FloatingActionButton addProdForm;
@@ -153,6 +156,9 @@ public class ProductListActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_EDIT_PRODUCT);
             }
         });
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ProductItemTouchHelper(adapter));
+        itemTouchHelper .attachToRecyclerView(prodListRecycler);
     }
 
     void loadData() {

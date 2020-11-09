@@ -17,14 +17,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
+import static com.example.logqualy.ui.Constantes.PRODUCTS_COLLECTION;
+
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
-    private List<Product> prudutos;
+    private List<Product> produtos;
     private Context context;
     private ProductItemClickListener onItemClickListener;
 
-    public ProductAdapter(Context context, List<Product> prudutos) {
-        this.prudutos = prudutos;
+    public ProductAdapter(Context context, List<Product> produtos) {
+        this.produtos = produtos;
         this.context = context;
     }
 
@@ -37,7 +39,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ProductAdapter.ViewHolder holder, int position) {
-        Product product = prudutos.get(position);
+        Product product = produtos.get(position);
         holder.mergeViewData(product);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,22 +51,22 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return prudutos.size();
+        return produtos.size();
     }
 
     public void setOnItemClickListener(ProductItemClickListener productItemClickListener) {
         this.onItemClickListener = productItemClickListener;
     }
 
-//    public void removeProduct(int adapterPosition) {
-//        Product product = productList.get(adapterPosition);
-//        FirebaseFirestore.getInstance()
-//                .collection(PRODUCTS_COLLECTION)
-//                .document(product.getId())
-//                .delete();
-//        productList.remove(adapterPosition);
-//        notifyItemRemoved(adapterPosition);
-//    }
+    public void removeProduct(int adapterPosition) {
+        Product product = produtos.get(adapterPosition);
+        FirebaseFirestore.getInstance()
+                .collection(PRODUCTS_COLLECTION)
+                .document(product.getId())
+                .delete();
+        produtos.remove(adapterPosition);
+        notifyItemRemoved(adapterPosition);
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

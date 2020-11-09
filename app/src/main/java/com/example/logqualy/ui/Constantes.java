@@ -7,4 +7,6 @@ public class Constantes {
     public static final String PRODUCT_EDIT = "PRODUCT_EDIT";
     public static final String EXTRA_PRODUCT_EDIT = "PRODUCT_EDIT_EXTRA";
 
+    public static final String PRODUCTS_COLLECTION = "products";
+
 }
