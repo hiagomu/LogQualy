@@ -13,7 +13,10 @@ import android.widget.EditText;
 import com.example.logqualy.R;
 import com.example.logqualy.model.Product;
 
+import static com.example.logqualy.ui.Constantes.EXTRA_PRODUCT_EDIT;
+import static com.example.logqualy.ui.Constantes.PRODUCT_EDIT;
 import static com.example.logqualy.ui.Constantes.PRODUCT_SAVE;
+import static com.example.logqualy.ui.Constantes.REQUEST_EDIT_PRODUCT;
 
 public class FormProductActivity extends AppCompatActivity {
 
@@ -21,6 +24,8 @@ public class FormProductActivity extends AppCompatActivity {
     private EditText descFormProd;
     private EditText dateFormProd;
     private Button saveFormProd;
+    private Product product;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +34,19 @@ public class FormProductActivity extends AppCompatActivity {
 
         carregarCampos();
         salvarForm();
+        intent = getIntent();
+
+        if (intent.hasExtra(EXTRA_PRODUCT_EDIT)) {
+            getSupportActionBar().setTitle("Editar Sinistros");
+            product = (Product) intent.getSerializableExtra(EXTRA_PRODUCT_EDIT);
+            loadForm();
+        }
+    }
+
+    private void loadForm() {
+        titleFormProd.setText(product.getTitulo());
+        descFormProd.setText(product.getDescricao());
+        dateFormProd.setText(product.getData());
     }
 
     private void carregarCampos() {
@@ -42,24 +60,42 @@ public class FormProductActivity extends AppCompatActivity {
         saveFormProd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Product product = getDados();
-                Intent intent = new Intent(FormProductActivity.this, ProductListActivity.class);
-                intent.putExtra(PRODUCT_SAVE, product);
-                setResult(Activity.RESULT_OK, intent);
-                finish();
+                if (intent.hasExtra(EXTRA_PRODUCT_EDIT)) {
+                    updateProductFromForm();
+                    goToProductActivity(PRODUCT_EDIT);
+                } else {
+                    getDados();
+                    goToProductActivity(PRODUCT_SAVE);
+                }
             }
         });
     }
 
-    private Product getDados() {
+    private void goToProductActivity(String saveOrEditExtra) {
+        Intent intent = new Intent(FormProductActivity.this, ProductListActivity.class);
+        intent.putExtra(saveOrEditExtra, product);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+    }
+
+    private void updateProductFromForm() {
+        String title = titleFormProd.getText().toString();
+        String desc = descFormProd.getText().toString();
+        String date = dateFormProd.getText().toString();
+
+        product.setTitulo(title);
+        product.setDescricao(desc);
+        product.setData(date);
+    }
+
+    private void getDados() {
         if (validateForm()) {
             String title = titleFormProd.getText().toString();
             String desc = descFormProd.getText().toString();
             String date = dateFormProd.getText().toString();
 
-            return new Product(title, desc, date);
+            product = new Product(title, desc, date);
         }
-        return null;
     }
 
     private boolean validateForm() {

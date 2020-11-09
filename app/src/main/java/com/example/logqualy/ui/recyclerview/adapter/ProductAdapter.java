@@ -38,7 +38,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ProductAdapter.ViewHolder holder, int position) {
         Product product = prudutos.get(position);
-        holder.vicula(product);
+        holder.mergeViewData(product);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClickListener.itemClick(product);
+            }
+        });
     }
 
     @Override
@@ -47,7 +53,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     }
 
     public void setOnItemClickListener(ProductItemClickListener productItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
+        this.onItemClickListener = productItemClickListener;
     }
 
 //    public void removeProduct(int adapterPosition) {
@@ -74,19 +80,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             data = itemView.findViewById(R.id.dateItemEditTxt);
         }
 
-        public void vicula(Product product) {
+        void mergeViewData(Product product) {
             nome.setText(product.getTitulo());
             descricao.setText(product.getDescricao());
             data.setText(product.getData());
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int posicao = getAdapterPosition();
-                    Product product = prudutos.get(getAdapterPosition());
-                    onItemClickListener.itemClick(product, posicao);
-                }
-            });
         }
     }
 }

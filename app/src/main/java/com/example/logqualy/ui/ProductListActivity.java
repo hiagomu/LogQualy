@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import com.example.logqualy.R;
 import com.example.logqualy.model.Product;
@@ -32,6 +33,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.logqualy.ui.Constantes.EXTRA_PRODUCT_EDIT;
 import static com.example.logqualy.ui.Constantes.PRODUCT_EDIT;
 import static com.example.logqualy.ui.Constantes.PRODUCT_SAVE;
 import static com.example.logqualy.ui.Constantes.REQUEST_CODE;
@@ -78,7 +80,7 @@ public class ProductListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && data.hasExtra(PRODUCT_SAVE)) {
-            if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == RESULT_OK) {
                 Product product = (Product) data.getSerializableExtra(PRODUCT_SAVE);
 
                 db.collection(PRODUCTS_COLLECTION).add(product);
@@ -131,7 +133,7 @@ public class ProductListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProductListActivity.this, FormProductActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
+                    startActivityForResult(intent, REQUEST_CODE);
             }
         });
     }
@@ -145,10 +147,9 @@ public class ProductListActivity extends AppCompatActivity {
 
         adapter.setOnItemClickListener(new ProductItemClickListener() {
             @Override
-            public void itemClick(Product product, int posicao) {
-                posicaoItemClick = posicao;
+            public void itemClick(Product product) {
                 Intent intent = new Intent(ProductListActivity.this, FormProductActivity.class);
-                intent.putExtra(PRODUCT_EDIT, product);
+                intent.putExtra(EXTRA_PRODUCT_EDIT, product);
                 startActivityForResult(intent, REQUEST_EDIT_PRODUCT);
             }
         });
