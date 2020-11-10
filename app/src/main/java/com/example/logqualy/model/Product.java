@@ -8,6 +8,7 @@ public class Product implements Serializable {
     private String titulo;
     private String descricao;
     private String data;
+    private String fotoProduto;
 
     public Product() {
     }
@@ -48,5 +49,13 @@ public class Product implements Serializable {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public String getFotoProduto() {
+        return fotoProduto;
+    }
+
+    public void setFotoProduto(String fotoProduto) {
+        this.fotoProduto = fotoProduto;
     }
 }

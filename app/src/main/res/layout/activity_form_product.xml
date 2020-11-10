@@ -59,26 +59,18 @@
         app:backgroundTint="#009688"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/photoFormPordImgView" />
+        app:layout_constraintTop_toBottomOf="@+id/photoFormProdImgView" />
 
     <ImageView
-        android:id="@+id/photoFormPordImgView"
+        android:id="@+id/photoFormProdImgView"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/dateFormProdEditTxt"
         app:layout_constraintStart_toStartOf="@+id/dateFormProdEditTxt"
         app:layout_constraintTop_toBottomOf="@+id/dateFormProdEditTxt"
         app:srcCompat="@drawable/ic_photo_foreground" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Photo"
-        android:textSize="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/photoFormPordImgView"
-        app:layout_constraintStart_toEndOf="@+id/photoFormPordImgView"
-        app:layout_constraintTop_toTopOf="@+id/photoFormPordImgView"
-        app:layout_constraintVertical_bias="0.555" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

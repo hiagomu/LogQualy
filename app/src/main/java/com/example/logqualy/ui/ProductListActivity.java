@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 
 import com.example.logqualy.R;
 import com.example.logqualy.model.Product;
@@ -27,14 +25,19 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import static com.example.logqualy.ui.Constantes.EXTRA_PATH_IMG;
 import static com.example.logqualy.ui.Constantes.EXTRA_PRODUCT_EDIT;
 import static com.example.logqualy.ui.Constantes.PRODUCTS_COLLECTION;
 import static com.example.logqualy.ui.Constantes.PRODUCT_EDIT;
@@ -51,8 +54,8 @@ public class ProductListActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private RecyclerView prodListRecycler;
     private ProductAdapter adapter;
-    private int posicaoItemClick;
     private List<Product> productList;
+    private StorageReference mStorageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,9 +88,20 @@ public class ProductListActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE && data.hasExtra(PRODUCT_SAVE)) {
             if (resultCode == RESULT_OK) {
                 Product product = (Product) data.getSerializableExtra(PRODUCT_SAVE);
+                byte[] byteArray1 = data.getByteArrayExtra(EXTRA_PATH_IMG);
 
-                db.collection(PRODUCTS_COLLECTION).add(product);
-                loadData();
+                if (byteArray1 == null) {return;}
+
+                String nameFile = UUID.randomUUID().toString();
+                mStorageRef = FirebaseStorage.getInstance().getReference().child("image/"+ nameFile);
+                mStorageRef.putBytes(byteArray1).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        product.setFotoProduto(nameFile);
+                        db.collection(PRODUCTS_COLLECTION).add(product);
+                        loadData();
+                    }
+                });
             }
         }
         if (requestCode == REQUEST_EDIT_PRODUCT && data.hasExtra(PRODUCT_EDIT)) {
